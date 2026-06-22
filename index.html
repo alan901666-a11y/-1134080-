@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邊界上的城市記憶：橋頭的區域變化書寫 - 數位展示成果</title>
+    <style>
+        :root {
+            --primary-color: #723D16; 
+            --secondary-color: #B85A1C; 
+            --text-dark: #2B1D11; 
+            --accent-color: #D9A05B; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', serif;
+            /* 正確設定：使用老火車頭地景照片作為全網頁固定背景，並疊加輕微的米白半透明遮罩維持文字可讀性 */
+            background-image: linear-gradient(rgba(250, 247, 242, 0.88), rgba(250, 247, 242, 0.88)), url('637471683219575507.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        nav ul { display: flex; justify-content: center; list-style: none; padding: 15px 0; }
+        nav ul li { margin: 0 20px; }
+        nav ul li a {
+            color: #fff; text-decoration: none; font-weight: bold;
+            font-size: 1.05rem; transition: color 0.3s;
+        }
+        nav ul li a:hover { color: var(--accent-color); }
+
+        header {
+            background: linear-gradient(rgba(43, 29, 17, 0.85), rgba(114, 61, 22, 0.95)), url('Taisugar_Kaohsiung_Plant_20170825.jpg') no-repeat center/cover;
+            color: #fff; text-align: center; padding: 100px 20px; border-bottom: 5px solid var(--secondary-color);
+        }
+        .dept-title { font-size: 1.2rem; letter-spacing: 3px; color: var(--accent-color); margin-bottom: 10px; }
+        header h1 { font-size: 3rem; letter-spacing: 3px; margin-bottom: 15px; font-weight: 700; }
+        .eng-title { font-size: 1.3rem; font-style: italic; opacity: 0.8; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .author-box {
+            background: rgba(255, 255, 255, 0.1); display: inline-block;
+            padding: 15px 40px; border-radius: 4px; border-top: 3px solid var(--accent-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .author-box h2 { font-size: 1.4rem; color: #fff; }
+
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        section h2 {
+            font-size: 2.2rem; color: var(--primary-color); text-align: center;
+            margin-bottom: 40px; position: relative; font-weight: bold;
+        }
+        section h2::after {
+            content: ''; display: block; width: 60px; height: 3px;
+            background-color: var(--secondary-color); margin: 15px auto 0 auto;
+        }
+
+        .abstract-container {
+            background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-left: 6px solid var(--secondary-color);
+            text-align: justify; margin-bottom: 40px;
+        }
+        .abstract-container p { margin-bottom: 15px; text-indent: 2em; }
+
+        /* 歷史時間軸 */
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; padding: 40px 0; }
+        .timeline::after {
+            content: ''; position: absolute; width: 4px; background-color: var(--primary-color);
+            top: 0; bottom: 0; left: 50%; margin-left: -2px;
+        }
+        .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
+        .timeline-container::after {
+            content: ''; position: absolute; width: 20px; height: 20px; right: -10px;
+            background-color: #FAF7F2; border: 4px solid var(--secondary-color);
+            top: 15px; border-radius: 50%; z-index: 1;
+        }
+        .left { left: 0; }
+        .right { left: 50%; }
+        .right::after { left: -10px; }
+        .timeline-content {
+            padding: 25px; background-color: rgba(255, 255, 255, 0.95); position: relative; border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 3px solid var(--primary-color);
+        }
+        .timeline-date { font-weight: bold; color: var(--secondary-color); font-size: 1.3rem; margin-bottom: 10px; }
+
+        .image-wrapper { margin: 20px 0; text-align: center; background: rgba(250, 247, 242, 0.6); padding: 15px; border: 1px solid #EAE1D4; border-radius: 4px; }
+        .image-wrapper img { max-width: 100%; height: auto; border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .image-caption { font-size: 0.85rem; color: #665544; margin-top: 10px; font-weight: bold; }
+
+        /* QGIS 展示區 */
+        .gis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+        .gis-card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .gis-card img { width: 100%; height: auto; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 15px; }
+        .gis-card h4 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 10px; text-align: left; }
+        .gis-card p { font-size: 0.9rem; color: #555; text-align: left; }
+
+        .culture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .culture-card { background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-right: 4px solid var(--accent-color); }
+        .culture-card h3 { color: var(--primary-color); margin-bottom: 15px; }
+
+        footer {
+            background-color: #21160E; color: #EAE1D4; padding: 60px 20px; text-align: center; font-size: 0.95rem;
+            position: relative; z-index: 10;
+        }
+        .footer-team { margin: 20px auto; max-width: 700px; padding-top: 25px; border-top: 1px solid #423225; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .timeline::after { left: 31px; }
+            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-container::after { left: 21px; }
+            .right { left: 0; }
+            .gis-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#abstract">研究摘要</a></li>
+            <li><a href="#chronology">時空脈絡演變</a></li>
+            <li><a href="#gis-section">QGIS 空間成果</a></li>
+            <li><a href="#society">社會文化在地生活</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="dept-title">國立嘉義大學應用歷史學系 期末學術書面報告成果</div>
+        <h1>邊界上的城市記憶：橋頭的區域變化書寫</h1>
+        <div class="eng-title">Urban Memory at the Margins: Documenting Regional Change in Qiaotou District</div>
+        <div class="author-box">
+            <h2>數位展示呈現：鄭宇綸</h2>
+        </div>
+    </header>
+
+    <!-- 摘要區 -->
+    <section id="abstract">
+        <h2>研究摘要</h2>
+        <div class="abstract-container">
+            <p>高雄的橋頭區，也許不是多數人熟悉的名字，對比左營的熱鬧、鼓山的觀光、鳳山的歷史名聲，橋頭顯得低調許多[cite: 2]。然而，正是這種「邊緣感」，反而成為橋頭獨特的魅力來源[cite: 2]。橋頭位於都市與鄉村之間，既接得上高雄的捷運線，也保留住在地的區域特性，像是一座靜默的橋樑，靜靜橫跨在過去與未來之間[cite: 2]。</p>
+            <p>橋頭地名起源於清代「橋仔頭庄」，是一個以橋為地標的農業聚落[cite: 2]。日治時期，台灣總督府選在此設立糖廠，開啟了台灣糖業發展的重要篇章[cite: 2]。如今，橋頭糖廠雖不再生產甘蔗糖，卻以文創與文化保存的方式延續著那段歷史，紅磚廠房與老火車頭，像是時光的標本供人回望[cite: 2]。</p>
+            <p>隨著捷運紅線延伸與橋頭新市鎮的開發，越來越多高樓住宅冒出頭來，新的居民帶來不同的生活方式，也讓原本單純的農村面貌逐漸改變[cite: 2]。橋頭正在轉型，此時正站在一個交界點上，既有歷史的影子，也映出未來的輪廓[cite: 2]。</p>
+        </div>
+        
+        <div class="image-wrapper">
+            <img src="橋頭糖廠全景圖.jpg" alt="橋頭糖廠文化園區全景圖">
+            <div class="image-caption">圖一：當代橋頭糖廠文化園區空間場域 / 來源：維基百科</div>
+        </div>
+    </section>
+
+    <!-- 歷史時間軸 -->
+    <section id="chronology">
+        <h2>歷史發展分期與時空脈絡</h2>
+        <div class="timeline">
+            
+            <!-- 明鄭以前 -->
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <div class="timeline-date">明鄭以前</div>
+                    <p>在漢人尚未進入前，橋頭地區為平埔族馬卡道族的生活活動範圍[cite: 2]。當時設有「哆吧思戎土社」部落，這個名字可能即為今日「仕隆」、「中崎」一帶的前身[cite: 2]。</p>
+                </div>
+            </div>
+
+            <!-- 清領時期 -->
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <div class="timeline-date">清領時期</div>
+                    <p>漢人入墾土地需求增加，開墾活動走向有組織化的「墾號」與「埤圳組織」建置[cite: 2]。在中崎溪築灞開渠引溪水灌溉水田（後壁田），為便利交通在縱貫大路上建立小橋，稱「允龜橋」，隨商旅增加形成「店仔街」，最終命名為「橋仔頭」[cite: 2]。</p>
+                </div>
+            </div>
+
+            <!-- 日治時期 -->
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <div class="timeline-date">日治時期（糖業黃金期）</div>
+                    <p>台灣總督府積極發展糖業，推動現代化新式製糖工場進駐[cite: 2]。1901年三井集團於現今高雄橋頭成立了台灣第一家新式機械製糖工場——台灣製糖株式會社橋仔頭工場[cite: 2]。隨產業發達引來大批仕紳階層，促使橋頭街執行台灣歷史上第一條現代概念的「街道改正」[cite: 2]。</p>
+                    <div class="image-wrapper">
+                        <!-- 對接正確照片 -->
+                        <img src="橋頭糖廠2022_07.jpg" alt="山本悌二郎銅像">
+                        <div class="image-caption">圖二：設立臺灣第一座現代化糖廠的關鍵人物山本悌二郎銅像 / 來源：維基百科</div>
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="Sugar_industry_Taiwan_13.jpg" alt="日治時期橋仔頭第一工廠歷史原貌">
+                        <div class="image-caption">圖三：日治時期臺灣製糖株式會社橋仔頭工場歷史原貌 / 來源：國家圖書館臺灣記憶資源網</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 戰後初期 -->
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <div class="timeline-date">戰後初期</div>
+                    <p>國民政府接收日治時期糖業資產並成立「台糖公司」[cite: 2]。民國36年（1947年），橋頭正式從岡山分出，獨立成立橋頭鄉，依傳統聚落地緣劃分為17個村[cite: 2]。此時期台糖冰品（紅豆酵母冰）逐漸成為深入地方的庶民日常記憶與文化發源[cite: 2]。</p>
+                    <div class="image-wrapper">
+                        <img src="Taisugar_Kaohsiung_Plant_20170825.jpg" alt="現代高雄糖廠大門">
+                        <div class="image-caption">圖四：更名為「台灣糖業公司高雄廠」之正門現貌 / 來源：維基百科</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 現代轉型 -->
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <div class="timeline-date">現代轉型與文化保存</div>
+                    <p>隨著全球糖價激烈競爭，橋頭糖廠於1999年正式終止製糖作業[cite: 2]。廠區功能在地方學界、文化工作者倡議下，於2003年起登錄為歷史建築群，逐步活化為「橋頭糖廠文化園區」，引入文化保存、鐵道休閒與地方文創（如太成肉包糖廠店）[cite: 2]。</p>
+                    <div class="image-wrapper">
+                        <img src="現代橋頭糖廠.jpg" alt="現代橋頭糖廠壓榨工廠內部">
+                        <div class="image-caption">圖五：停產後完整保留之壓榨工廠內部工業遺產地景 / 來源：維基百科</div>
+                    </div>
+                    <div class="image-wrapper">
+                        <!-- 對接正確照片 -->
+                        <img src="1709797095.jpg" alt="廠區文創藝術鐵件裝置">
+                        <div class="image-caption">圖六：糖廠舊鐵件再利用改造之現代文創裝置藝術 / 來源：維基百科</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- QGIS 地圖空間對照區 -->
+    <section id="gis-section">
+        <h2>QGIS 地理資訊系統實作成果</h2>
+        <p style="text-align:center; max-width:750px; margin:-20px auto 40px auto; color:#665544;">
+            本章節展現報告中以 QGIS 進行地理參考控制點定位（Georeferencing）的實際成果。透過將日治時期古地圖與現代底圖進行空間疊合，重現百年來歷史核心廠區與里鄰空間界線的重疊移轉[cite: 2]。
+        </p>
+        
+        <div class="gis-grid">
+            <div class="gis-card">
+                <!-- 修正：正確載入日治歷史舊地圖 -->
+                <img src="橋頭糖廠舊地圖_2.jpg" alt="日治時期歷史舊地圖圖層">
+                <h4>圖層 A：日治時期橋仔頭糖廠歷史圖層</h4>
+                <p>將歷史堡圖匯入 QGIS 進行多點座標控制對位，灰色區域精確勾勒出日治株式會社初期建廠時的廠區原始範圍與專用五分車鐵路幹線軸線[cite: 2]。</p>
+            </div>
+            <div class="gis-card">
+                <!-- 修正：正確載入帶有彩色行政邊界重劃與捷運線的現代 QGIS 導出地圖 -->
+                <img src="現代橋頭糖廠_2.jpg" alt="現代當代行政邊界重劃成果地圖">
+                <h4>圖層 B：當代行政邊界與現代底圖成果</h4>
+                <p>對應相同地理範圍的現代圖層，清晰可見當代捷運紅線（青埔站、橋頭糖廠站）橫跨，以及都市重劃後，新市鎮複合空間的現代輪廓[cite: 2]。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社會文化在地生活 -->
+    <section id="society">
+        <h2>社會文化與在地生活實踐</h2>
+        <div class="culture-grid">
+            
+            <div class="culture-card">
+                <h3>⛩️ 宗教信仰：三山國王與帝仙宮</h3>
+                <p>橋頭地區的三山國王信仰源遠流長，涵蓋新庄義山宮、九甲圍義山宮及三德三山宮，其中九甲圍義山宮更被譽為全球最大的三山國王廟[cite: 2]。此外，主祀神農大帝的「帝仙宮」信仰圈涵蓋仕隆、仕豐與仕和三村，元宵節的乞龜儀式與村莊巡境，至今仍成爲凝聚地方社群的核心向心力[cite: 2]。</p>
+            </div>
+
+            <div class="culture-card">
+                <h3>🏫 教育沿革：仕隆國小百年歷史</h3>
+                <p>創立於民國6年（1917年），初為「楠梓坑公學校仕隆分校」，歷經「仕隆公學校」、「楠梓第二公學校」等多度更名，於1941年全面改制為「仕隆國民學校」[cite: 2]。作為當地歷史最悠久的教育機構，仕隆國小承載了數代橋頭居民共同的社群與成長記憶[cite: 2]。</p>
+            </div>
+
+            <div class="culture-card">
+                <h3>👤 家族與政經：余登發家族與仕隆許氏</h3>
+                <p>政治層面上，橋頭老街印記了「台灣民主先驅」首任鄉長余登發家族（黑派余家班）的黨外民主奮鬥歷程與橋頭事件歷史[cite: 2]。血緣宗族則以福建漳州長泰遷徙而來的「仕隆許氏家族」最具代表，其傳衍十三代，早期留下的「五進四院」傳統大厝，見證了地方宗族在土地開墾中的重要支持功能[cite: 2]。</p>
+            </div>
+
+            <div class="culture-card">
+                <h3>🥟 飲食文化：太成肉包與庶民譜系</h3>
+                <p>橋頭老街與糖廠文創園區具備歷史共生性，以創立於民國70年代的「太成肉包」老字號最著名，其結合歷史老屋內裝、引入黑糖糖廠限定口味，成為傳統日常美食成功與觀光文化空間對接、由生產導向轉向整合式文化體驗行銷的代表性典型模式[cite: 2]。</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p style="font-size: 1.3rem; font-weight: bold; color: var(--accent-color); letter-spacing: 2px;">謝謝指導</p>
+        <p style="margin-top: 5px; font-size:1.1rem;">國立嘉義大學應用歷史學系 期末學術報告數位成果</p>
+        
+        <div class="footer-team">
+            <p><strong>書面報告共同作者：</strong>周昀潔 ｜ 鄭宇綸 ｜ 黃語哲 ｜ 戴文聰[cite: 2]</p>
+            <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.7;">本網頁成果由 <strong>鄭宇綸</strong> 獨立進行 HTML5/CSS3 全靜態響應式網頁（RWD）程式碼撰寫與 QGIS 影像數位製圖部署[cite: 2]。</p>
+            <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.6;">參考文獻：國家圖書館臺灣記憶系統 ｜ 維基百科 ｜ 行政院農業委員會 ｜ 高雄市橋頭區公所區政統計年報[cite: 2]</p>
+        </div>
+    </footer>
+
+</body>
+</html>
